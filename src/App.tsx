@@ -11,6 +11,7 @@ import { Voucher } from "./components/VoucherCard";
 
 const queryClient = new QueryClient();
 
+// VoucherHub Merchant Portal
 const App = () => {
   const [cartItems, setCartItems] = useState<Voucher[]>([]);
 
