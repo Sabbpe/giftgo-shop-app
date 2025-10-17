@@ -24,61 +24,43 @@ export const CategoryIcons = ({ onCategoryClick, selectedCategory }: CategoryIco
       {categories.map((category) => (
         <div
           key={category.label}
-          className={`relative group cursor-pointer transition-all duration-300 ${
-            selectedCategory === category.category ? "scale-105" : "hover:scale-105"
+          className={`relative group cursor-pointer transition-all duration-500 ${
+            selectedCategory === category.category ? "scale-110" : "hover:scale-105"
           }`}
           onClick={() => onCategoryClick(category.category)}
         >
+          {/* Glow effect */}
           <div 
-            className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl`}
+            className="absolute inset-0 rounded-2xl opacity-40 group-hover:opacity-80 transition-opacity duration-500 blur-2xl"
             style={{ 
               background: `var(--gradient-${category.gradient})`,
-              boxShadow: `var(--shadow-glow) ${category.gradient === 'wellness' ? 'hsl(330 80% 65% / 0.5)' : 
-                          category.gradient === 'food' ? 'hsl(25 95% 60% / 0.5)' :
-                          category.gradient === 'travel' ? 'hsl(200 90% 60% / 0.5)' :
-                          category.gradient === 'ecommerce' ? 'hsl(160 70% 50% / 0.5)' :
-                          category.gradient === 'gaming' ? 'hsl(270 80% 60% / 0.5)' :
-                          category.gradient === 'fashion' ? 'hsl(340 85% 60% / 0.5)' :
-                          category.gradient === 'jewellery' ? 'hsl(50 85% 60% / 0.5)' :
-                          category.gradient === 'entertainment' ? 'hsl(310 80% 60% / 0.5)' :
-                          'hsl(120 70% 50% / 0.5)'}`
             }}
           />
+          
+          {/* Main card with gradient background */}
           <Card
-            className={`relative overflow-hidden border-2 transition-all duration-300 ${
-              selectedCategory === category.category
-                ? "border-transparent shadow-2xl"
-                : "border-border/50 hover:border-transparent"
+            className={`relative overflow-hidden border-none transition-all duration-500 shadow-lg group-hover:shadow-2xl ${
+              selectedCategory === category.category ? "ring-4 ring-white/50" : ""
             }`}
             style={{
-              background: selectedCategory === category.category 
-                ? `var(--gradient-${category.gradient})` 
-                : undefined
+              background: `var(--gradient-${category.gradient})`
             }}
           >
+            {/* Animated shine overlay */}
             <div 
-              className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-              style={{ background: `var(--gradient-${category.gradient})` }}
+              className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
             />
+            
             <div className="relative p-8 flex flex-col items-center text-center space-y-3">
-              <div className={`p-4 rounded-full transition-all duration-300 ${
-                selectedCategory === category.category 
-                  ? "bg-white/20 backdrop-blur-sm" 
-                  : "bg-card group-hover:bg-white/20 group-hover:backdrop-blur-sm"
-              }`}>
+              {/* Icon container with glassmorphism */}
+              <div className="p-4 rounded-full bg-white/20 backdrop-blur-md border border-white/30 transition-all duration-500 group-hover:bg-white/30 group-hover:scale-110 group-hover:rotate-6">
                 <category.icon 
-                  className={`h-10 w-10 transition-all duration-300 ${
-                    selectedCategory === category.category
-                      ? "text-white scale-110"
-                      : "text-foreground group-hover:text-white group-hover:scale-110"
-                  }`} 
+                  className="h-10 w-10 text-white transition-all duration-500 group-hover:scale-110" 
                 />
               </div>
-              <p className={`font-semibold text-sm transition-colors duration-300 ${
-                selectedCategory === category.category
-                  ? "text-white"
-                  : "text-foreground group-hover:text-white"
-              }`}>
+              
+              {/* Label */}
+              <p className="font-bold text-sm text-white transition-all duration-500 group-hover:scale-105 drop-shadow-md">
                 {category.label}
               </p>
             </div>
