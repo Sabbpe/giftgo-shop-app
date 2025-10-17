@@ -27,6 +27,9 @@ const VoucherCard = ({ voucher, onAddToCart }: VoucherCardProps) => {
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 transition-opacity group-hover:opacity-100" />
       
       <CardHeader className="relative">
+        <div className="aspect-square bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg mb-3 flex items-center justify-center">
+          <div className="text-6xl font-bold text-primary/20">{voucher.title.charAt(0)}</div>
+        </div>
         <div className="flex items-start justify-between">
           <Badge variant="secondary" className="mb-2">
             {voucher.category}
@@ -37,24 +40,23 @@ const VoucherCard = ({ voucher, onAddToCart }: VoucherCardProps) => {
             </Badge>
           )}
         </div>
-        <CardTitle className="text-2xl">{voucher.title}</CardTitle>
-        <CardDescription>{voucher.description}</CardDescription>
+        <CardTitle className="text-xl">{voucher.title}</CardTitle>
       </CardHeader>
 
       <CardContent className="relative">
         <div className="flex items-baseline gap-2">
           {voucher.discount ? (
             <>
-              <span className="text-3xl font-bold text-foreground">
-                ${finalPrice.toFixed(2)}
+              <span className="text-2xl font-bold text-foreground">
+                ₹{finalPrice.toFixed(0)}
               </span>
-              <span className="text-lg text-muted-foreground line-through">
-                ${voucher.value.toFixed(2)}
+              <span className="text-sm text-muted-foreground line-through">
+                ₹{voucher.value.toFixed(0)}
               </span>
             </>
           ) : (
-            <span className="text-3xl font-bold text-foreground">
-              ${voucher.value.toFixed(2)}
+            <span className="text-2xl font-bold text-foreground">
+              ₹{voucher.value.toFixed(0)}
             </span>
           )}
         </div>

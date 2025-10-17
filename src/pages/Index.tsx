@@ -1,10 +1,17 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import VoucherCard, { Voucher } from "@/components/VoucherCard";
 import Cart from "@/components/Cart";
+import Banner from "@/components/Banner";
+import CategoryIcons from "@/components/CategoryIcons";
+import DealOfTheDay from "@/components/DealOfTheDay";
+import Testimonials from "@/components/Testimonials";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 
-const VOUCHERS: Voucher[] = [
+export const VOUCHERS: Voucher[] = [
   { id: "151", title: "@ Home", value: 100, description: "Fashion & Lifestyle", category: "Fashion & Lifestyle", discount: 7 },
   { id: "153", title: "Aeropostale", value: 100, description: "Fashion & Lifestyle", category: "Fashion & Lifestyle", discount: 8 },
   { id: "155", title: "AJIO", value: 100, description: "Fashion & Lifestyle", category: "Fashion & Lifestyle", discount: 6.25 },
@@ -116,8 +123,10 @@ interface IndexProps {
 }
 
 const Index = ({ cartItems, setCartItems }: IndexProps) => {
-  const [cartOpen, setCartOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("store");
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleAddToCart = (voucher: Voucher) => {
     setCartItems([...cartItems, voucher]);
@@ -131,41 +140,106 @@ const Index = ({ cartItems, setCartItems }: IndexProps) => {
     setCartItems(cartItems.filter((item) => item.id !== id));
   };
 
-  const handleCheckout = () => {
-    setCartOpen(false);
+  const handleVoucherClick = (voucher: Voucher) => {
+    navigate(`/brand/${voucher.id}`);
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <Header cartCount={cartItems.length} onCartClick={() => setCartOpen(true)} />
+      <Header 
+        cartCount={cartItems.length} 
+        onCartClick={() => setIsCartOpen(true)} 
+      />
       
       <main className="container py-8">
-        <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Purchase Gift Vouchers
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Choose from our range of gift vouchers. Perfect for employee rewards, customer appreciation, and promotional campaigns.
-          </p>
-        </div>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="mb-8 w-full justify-start">
+            <TabsTrigger value="store">Store</TabsTrigger>
+            <TabsTrigger value="whats-hot">What's Hot</TabsTrigger>
+            <TabsTrigger value="categories">Categories</TabsTrigger>
+            <TabsTrigger value="personalize">Personalize</TabsTrigger>
+          </TabsList>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {VOUCHERS.map((voucher) => (
-            <VoucherCard
-              key={voucher.id}
-              voucher={voucher}
-              onAddToCart={handleAddToCart}
-            />
-          ))}
-        </div>
+          <TabsContent value="store" className="space-y-8">
+            <Banner />
+            <CategoryIcons />
+            
+            <Card className="bg-gradient-to-r from-primary/10 to-accent/10 border-none">
+              <CardContent className="p-8 text-center">
+                <h2 className="text-2xl font-bold mb-2">Buy Gift Cards Online - Fast & Secure</h2>
+                <p className="text-muted-foreground">
+                  Purchase e-gift cards or prepaid cards with instant delivery. Shop from 100+ premium brands with exclusive discounts!
+                </p>
+              </CardContent>
+            </Card>
+
+            <DealOfTheDay vouchers={VOUCHERS} onVoucherClick={handleVoucherClick} />
+
+            <div>
+              <h2 className="text-3xl font-bold mb-6">All Brands</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {VOUCHERS.map((voucher) => (
+                  <VoucherCard
+                    key={voucher.id}
+                    voucher={voucher}
+                    onAddToCart={handleAddToCart}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <Testimonials />
+          </TabsContent>
+
+          <TabsContent value="whats-hot">
+            <h2 className="text-3xl font-bold mb-6">What's Hot</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {VOUCHERS.filter(v => v.discount && v.discount >= 10).map((voucher) => (
+                <VoucherCard
+                  key={voucher.id}
+                  voucher={voucher}
+                  onAddToCart={handleAddToCart}
+                />
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="categories">
+            <h2 className="text-3xl font-bold mb-6">Browse by Category</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {VOUCHERS.map((voucher) => (
+                <VoucherCard
+                  key={voucher.id}
+                  voucher={voucher}
+                  onAddToCart={handleAddToCart}
+                />
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="personalize">
+            <div className="text-center py-12">
+              <h2 className="text-3xl font-bold mb-4">Personalize Your Gift</h2>
+              <p className="text-muted-foreground mb-8">
+                Add a personal touch to your gift cards with custom messages and designs
+              </p>
+              <Card className="max-w-2xl mx-auto p-8">
+                <p className="text-muted-foreground">
+                  Personalization feature coming soon! You'll be able to add custom messages, 
+                  select special designs, and schedule delivery for your gift cards.
+                </p>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
       </main>
 
-      <Cart
-        open={cartOpen}
-        onOpenChange={setCartOpen}
+      <Cart 
+        open={isCartOpen} 
+        onOpenChange={setIsCartOpen}
         items={cartItems}
         onRemoveItem={handleRemoveFromCart}
-        onCheckout={handleCheckout}
+        onCheckout={() => setIsCartOpen(false)}
       />
     </div>
   );

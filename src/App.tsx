@@ -6,8 +6,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Checkout from "./pages/Checkout";
+import BrandDetails from "./pages/BrandDetails";
 import NotFound from "./pages/NotFound";
 import { Voucher } from "./components/VoucherCard";
+import { VOUCHERS } from "./pages/Index";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +30,17 @@ const App = () => {
                 <Index 
                   cartItems={cartItems}
                   setCartItems={setCartItems}
+                />
+              } 
+            />
+            <Route 
+              path="/brand/:brandId" 
+              element={
+                <BrandDetails 
+                  vouchers={VOUCHERS}
+                  cartItems={cartItems}
+                  onAddToCart={(voucher) => setCartItems([...cartItems, voucher])}
+                  onCartClick={() => {}}
                 />
               } 
             />
