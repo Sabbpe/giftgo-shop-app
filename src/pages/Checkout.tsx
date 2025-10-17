@@ -114,7 +114,7 @@ const Checkout = ({ items, onClearCart }: CheckoutProps) => {
                     size="lg"
                     disabled={loading}
                   >
-                    {loading ? "Processing..." : `Pay $${total.toFixed(2)}`}
+                    {loading ? "Processing..." : `Pay ₹${total.toFixed(2)}`}
                   </Button>
                 </form>
               </CardContent>
@@ -139,7 +139,7 @@ const Checkout = ({ items, onClearCart }: CheckoutProps) => {
                         <p className="font-medium">{item.title}</p>
                         <p className="text-sm text-muted-foreground">{item.category}</p>
                       </div>
-                      <p className="font-semibold">${price.toFixed(2)}</p>
+                      <p className="font-semibold">₹{price.toFixed(2)}</p>
                     </div>
                   );
                 })}
@@ -148,7 +148,7 @@ const Checkout = ({ items, onClearCart }: CheckoutProps) => {
 
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>₹{total.toFixed(2)}</span>
                 </div>
               </CardContent>
             </Card>

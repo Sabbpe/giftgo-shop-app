@@ -55,7 +55,7 @@ const Cart = ({ open, onOpenChange, items, onRemoveItem, onCheckout }: CartProps
                     <div className="flex-1">
                       <h4 className="font-semibold">{item.title}</h4>
                       <p className="text-sm text-muted-foreground">{item.category}</p>
-                      <p className="text-lg font-bold mt-1">${price.toFixed(2)}</p>
+                      <p className="text-lg font-bold mt-1">₹{price.toFixed(2)}</p>
                     </div>
                     <Button
                       variant="ghost"
@@ -73,7 +73,7 @@ const Cart = ({ open, onOpenChange, items, onRemoveItem, onCheckout }: CartProps
               <div className="space-y-2">
                 <div className="flex justify-between text-lg font-semibold">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>₹{total.toFixed(2)}</span>
                 </div>
               </div>
 
