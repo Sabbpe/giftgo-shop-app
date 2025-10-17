@@ -18,7 +18,7 @@ interface CategoryIconsProps {
   selectedCategory?: string;
 }
 
-const CategoryIcons = ({ onCategoryClick, selectedCategory }: CategoryIconsProps) => {
+export const CategoryIcons = ({ onCategoryClick, selectedCategory }: CategoryIconsProps) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
       {categories.map((category) => (
