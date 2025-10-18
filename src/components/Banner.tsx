@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import bannerDeals from "@/assets/banner-deals.jpg";
+import bannerFashion from "@/assets/banner-fashion.jpg";
+import bannerHot from "@/assets/banner-hot.jpg";
 
 const banners = [
   {
@@ -8,21 +11,24 @@ const banners = [
     title: "Get Ready for Amazing Deals",
     subtitle: "From local to global gift cards - save on your favorites now!",
     gradient: "from-purple-900 via-purple-800 to-pink-800",
-    badge: "UP TO 80% OFF"
+    badge: "UP TO 80% OFF",
+    image: bannerDeals
   },
   {
     id: 2,
     title: "Exclusive Fashion Vouchers",
     subtitle: "Shop from top brands with incredible discounts",
     gradient: "from-blue-900 via-indigo-800 to-purple-800",
-    badge: "NEW ARRIVALS"
+    badge: "NEW ARRIVALS",
+    image: bannerFashion
   },
   {
     id: 3,
     title: "Limited Time Offers",
     subtitle: "Don't miss out on these exclusive deals",
     gradient: "from-orange-900 via-red-800 to-pink-800",
-    badge: "HOT DEALS"
+    badge: "HOT DEALS",
+    image: bannerHot
   }
 ];
 
@@ -59,7 +65,13 @@ const Banner = () => {
                 Explore Now
               </Button>
             </div>
-            <div className="w-64 h-64 bg-white/10 rounded-full animate-pulse" />
+            <div className="w-80 h-80 relative">
+              <img 
+                src={banner.image} 
+                alt={banner.title} 
+                className="w-full h-full object-contain drop-shadow-2xl"
+              />
+            </div>
           </div>
         </div>
       ))}
