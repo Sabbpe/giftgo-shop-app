@@ -49,7 +49,7 @@ const sortOptions: SortOption[] = [
   { value: "name-desc", label: "Brand: Z to A" },
 ];
 
-const FilterSort = ({ onFilterChange, onSortChange, categories }: FilterSortProps) => {
+const FilterSort = ({ onFilterChange, onSortChange, categories = [] }: FilterSortProps) => {
   const [filters, setFilters] = useState<FilterOptions>({
     priceRange: "all",
     availability: [],
