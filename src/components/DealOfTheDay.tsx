@@ -2,14 +2,15 @@ import { useState, useEffect } from "react";
 import { Clock } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Voucher } from "./VoucherCard";
+import { Brand, Category } from "@/hooks/useBrands";
 
 interface DealOfTheDayProps {
-  vouchers: Voucher[];
-  onVoucherClick: (voucher: Voucher) => void;
+  brands: Brand[];
+  categories: Category[];
+  onBrandClick: (slug: string) => void;
 }
 
-const DealOfTheDay = ({ vouchers, onVoucherClick }: DealOfTheDayProps) => {
+const DealOfTheDay = ({ brands, categories, onBrandClick }: DealOfTheDayProps) => {
   const [timeLeft, setTimeLeft] = useState({
     hours: 23,
     minutes: 45,
@@ -33,8 +34,6 @@ const DealOfTheDay = ({ vouchers, onVoucherClick }: DealOfTheDayProps) => {
     return () => clearInterval(timer);
   }, []);
 
-  const topDeals = vouchers.slice(0, 6);
-
   return (
     <div className="mb-12">
       <div className="flex items-center justify-between mb-6">
@@ -53,25 +52,36 @@ const DealOfTheDay = ({ vouchers, onVoucherClick }: DealOfTheDayProps) => {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {topDeals.map((voucher) => (
-          <Card
-            key={voucher.id}
-            className="group cursor-pointer hover:shadow-xl transition-all overflow-hidden"
-            onClick={() => onVoucherClick(voucher)}
-          >
-            <CardContent className="p-4">
-              <div className="aspect-square bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg mb-3 flex items-center justify-center">
-                <div className="text-4xl font-bold text-primary/20">{voucher.title.charAt(0)}</div>
-              </div>
-              <h3 className="font-semibold text-sm mb-2 truncate">{voucher.title}</h3>
-              {voucher.discount && (
-                <Badge className="bg-accent text-accent-foreground">
-                  {voucher.discount}% OFF
-                </Badge>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+        {brands.map((brand) => {
+          const category = categories.find(c => c.id === brand.category_id);
+          return (
+            <Card
+              key={brand.id}
+              className="group cursor-pointer hover:shadow-xl transition-all overflow-hidden"
+              onClick={() => onBrandClick(brand.slug)}
+            >
+              <CardContent className="p-4">
+                <div className="aspect-square bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg mb-3 flex items-center justify-center overflow-hidden">
+                  {brand.logo_url ? (
+                    <img 
+                      src={brand.logo_url} 
+                      alt={brand.name}
+                      className="w-full h-full object-contain p-2"
+                    />
+                  ) : (
+                    <div className="text-4xl font-bold text-primary/20">{brand.name.charAt(0)}</div>
+                  )}
+                </div>
+                <h3 className="font-semibold text-sm mb-2 truncate">{brand.name}</h3>
+                {brand.discount_percentage > 0 && (
+                  <Badge className="bg-accent text-accent-foreground text-xs">
+                    {brand.discount_percentage}% OFF
+                  </Badge>
+                )}
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );

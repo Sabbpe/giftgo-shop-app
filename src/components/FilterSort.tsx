@@ -29,7 +29,7 @@ export interface SortOption {
 interface FilterSortProps {
   onFilterChange: (filters: FilterOptions) => void;
   onSortChange: (sort: string) => void;
-  availableCategories: string[];
+  categories: string[];
 }
 
 const priceRanges = [
@@ -49,7 +49,7 @@ const sortOptions: SortOption[] = [
   { value: "name-desc", label: "Brand: Z to A" },
 ];
 
-const FilterSort = ({ onFilterChange, onSortChange, availableCategories }: FilterSortProps) => {
+const FilterSort = ({ onFilterChange, onSortChange, categories }: FilterSortProps) => {
   const [filters, setFilters] = useState<FilterOptions>({
     priceRange: "all",
     availability: [],
@@ -127,7 +127,7 @@ const FilterSort = ({ onFilterChange, onSortChange, availableCategories }: Filte
             <div>
               <h3 className="font-semibold mb-3">Categories</h3>
               <div className="space-y-2">
-                {availableCategories.map((category) => (
+                {categories.map((category) => (
                   <div key={category} className="flex items-center space-x-2">
                     <Checkbox
                       id={`cat-${category}`}

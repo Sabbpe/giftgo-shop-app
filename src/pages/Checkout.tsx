@@ -7,9 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { CartItem } from "@/types/cart";
 
 interface CheckoutProps {
-  items: any[];
+  items: CartItem[];
   onClearCart: () => void;
 }
 
@@ -19,9 +20,9 @@ const Checkout = ({ items, onClearCart }: CheckoutProps) => {
   const [loading, setLoading] = useState(false);
 
   const total = items.reduce((sum, item) => {
-    const price = item.discount 
-      ? item.value * (1 - item.discount / 100)
-      : item.value;
+    const price = item.discount > 0
+      ? item.denomination * (1 - item.discount / 100)
+      : item.denomination;
     return sum + price;
   }, 0);
 
@@ -129,15 +130,25 @@ const Checkout = ({ items, onClearCart }: CheckoutProps) => {
               </CardHeader>
               <CardContent className="space-y-4">
                 {items.map((item) => {
-                  const price = item.discount 
-                    ? item.value * (1 - item.discount / 100)
-                    : item.value;
+                  const price = item.discount > 0
+                    ? item.denomination * (1 - item.discount / 100)
+                    : item.denomination;
                   
                   return (
-                    <div key={item.id} className="flex justify-between">
-                      <div>
-                        <p className="font-medium">{item.title}</p>
-                        <p className="text-sm text-muted-foreground">{item.category}</p>
+                    <div key={item.id} className="flex justify-between items-start gap-4">
+                      <div className="flex gap-3 flex-1">
+                        <div className="h-12 w-12 shrink-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg flex items-center justify-center overflow-hidden">
+                          {item.logoUrl ? (
+                            <img src={item.logoUrl} alt={item.brandName} className="w-full h-full object-contain p-1" />
+                          ) : (
+                            <div className="text-xl font-bold text-primary/20">{item.brandName.charAt(0)}</div>
+                          )}
+                        </div>
+                        <div>
+                          <p className="font-medium">{item.brandName}</p>
+                          <p className="text-sm text-muted-foreground">{item.category}</p>
+                          <p className="text-xs text-muted-foreground">₹{item.denomination} voucher</p>
+                        </div>
                       </div>
                       <p className="font-semibold">₹{price.toFixed(2)}</p>
                     </div>

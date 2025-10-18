@@ -8,14 +8,12 @@ import Index from "./pages/Index";
 import Checkout from "./pages/Checkout";
 import BrandDetails from "./pages/BrandDetails";
 import NotFound from "./pages/NotFound";
-import { Voucher } from "./components/VoucherCard";
-import { VOUCHERS } from "./pages/Index";
+import { CartItem } from "./types/cart";
 
 const queryClient = new QueryClient();
 
-// VoucherHub Merchant Portal
 const App = () => {
-  const [cartItems, setCartItems] = useState<Voucher[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -34,13 +32,11 @@ const App = () => {
               } 
             />
             <Route 
-              path="/brand/:brandId" 
+              path="/brand/:brandSlug" 
               element={
                 <BrandDetails 
-                  vouchers={VOUCHERS}
                   cartItems={cartItems}
-                  onAddToCart={(voucher) => setCartItems([...cartItems, voucher])}
-                  onCartClick={() => {}}
+                  setCartItems={setCartItems}
                 />
               } 
             />

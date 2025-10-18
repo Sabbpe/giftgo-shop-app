@@ -2,13 +2,13 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Trash2 } from "lucide-react";
-import { Voucher } from "./VoucherCard";
+import { CartItem } from "@/types/cart";
 import { useNavigate } from "react-router-dom";
 
 interface CartProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  items: Voucher[];
+  items: CartItem[];
   onRemoveItem: (id: string) => void;
   onCheckout: () => void;
 }
@@ -17,9 +17,9 @@ const Cart = ({ open, onOpenChange, items, onRemoveItem, onCheckout }: CartProps
   const navigate = useNavigate();
   
   const total = items.reduce((sum, item) => {
-    const price = item.discount 
-      ? item.value * (1 - item.discount / 100)
-      : item.value;
+    const price = item.discount > 0
+      ? item.denomination * (1 - item.discount / 100)
+      : item.denomination;
     return sum + price;
   }, 0);
 
@@ -46,15 +46,23 @@ const Cart = ({ open, onOpenChange, items, onRemoveItem, onCheckout }: CartProps
           ) : (
             <>
               {items.map((item) => {
-                const price = item.discount 
-                  ? item.value * (1 - item.discount / 100)
-                  : item.value;
+                const price = item.discount > 0
+                  ? item.denomination * (1 - item.discount / 100)
+                  : item.denomination;
                 
                 return (
                   <div key={item.id} className="flex items-center gap-4 p-4 rounded-lg border">
+                    <div className="h-16 w-16 shrink-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg flex items-center justify-center overflow-hidden">
+                      {item.logoUrl ? (
+                        <img src={item.logoUrl} alt={item.brandName} className="w-full h-full object-contain p-2" />
+                      ) : (
+                        <div className="text-2xl font-bold text-primary/20">{item.brandName.charAt(0)}</div>
+                      )}
+                    </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold">{item.title}</h4>
+                      <h4 className="font-semibold">{item.brandName}</h4>
                       <p className="text-sm text-muted-foreground">{item.category}</p>
+                      <p className="text-sm text-muted-foreground">₹{item.denomination} voucher</p>
                       <p className="text-lg font-bold mt-1">₹{price.toFixed(2)}</p>
                     </div>
                     <Button
