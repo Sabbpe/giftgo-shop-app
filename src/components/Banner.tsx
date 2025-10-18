@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import bannerDeals from "@/assets/banner-deals.jpg";
-import bannerFashion from "@/assets/banner-fashion.jpg";
-import bannerHot from "@/assets/banner-hot.jpg";
+import bannerDeals from "@/assets/banner-deals-bright.jpg";
+import bannerFashion from "@/assets/banner-fashion-bright.jpg";
+import bannerHot from "@/assets/banner-hot-bright.jpg";
 
 const banners = [
   {
     id: 1,
     title: "Get Ready for Amazing Deals",
     subtitle: "From local to global gift cards - save on your favorites now!",
-    gradient: "from-purple-900 via-purple-800 to-pink-800",
+    gradient: "from-fuchsia-600 via-purple-600 to-blue-500",
     badge: "UP TO 80% OFF",
     image: bannerDeals
   },
@@ -18,7 +18,7 @@ const banners = [
     id: 2,
     title: "Exclusive Fashion Vouchers",
     subtitle: "Shop from top brands with incredible discounts",
-    gradient: "from-blue-900 via-indigo-800 to-purple-800",
+    gradient: "from-cyan-500 via-blue-500 to-purple-600",
     badge: "NEW ARRIVALS",
     image: bannerFashion
   },
@@ -26,7 +26,7 @@ const banners = [
     id: 3,
     title: "Limited Time Offers",
     subtitle: "Don't miss out on these exclusive deals",
-    gradient: "from-orange-900 via-red-800 to-pink-800",
+    gradient: "from-orange-500 via-red-500 to-pink-600",
     badge: "HOT DEALS",
     image: bannerHot
   }
@@ -54,23 +54,25 @@ const Banner = () => {
             index === currentSlide ? "opacity-100" : "opacity-0"
           }`}
         >
-          <div className={`w-full h-full bg-gradient-to-r ${banner.gradient} flex items-center justify-between px-16`}>
-            <div className="text-white space-y-4 max-w-xl">
-              <div className="inline-block bg-accent/90 text-accent-foreground px-4 py-2 rounded-full text-sm font-bold rotate-3">
-                {banner.badge}
-              </div>
-              <h2 className="text-5xl font-bold">{banner.title}</h2>
-              <p className="text-xl opacity-90">{banner.subtitle}</p>
-              <Button size="lg" className="mt-4">
-                Explore Now
-              </Button>
-            </div>
-            <div className="w-80 h-80 relative">
+          <div className={`w-full h-full bg-gradient-to-br ${banner.gradient} relative overflow-hidden`}>
+            <div className="absolute inset-0">
               <img 
                 src={banner.image} 
                 alt={banner.title} 
-                className="w-full h-full object-contain drop-shadow-2xl"
+                className="w-full h-full object-cover opacity-90 mix-blend-overlay"
               />
+            </div>
+            <div className="relative z-10 flex items-center justify-between px-16 h-full">
+              <div className="text-white space-y-4 max-w-xl">
+                <div className="inline-block bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg animate-pulse">
+                  {banner.badge}
+                </div>
+                <h2 className="text-6xl font-bold drop-shadow-lg">{banner.title}</h2>
+                <p className="text-xl font-medium drop-shadow-md">{banner.subtitle}</p>
+                <Button size="lg" className="mt-4 bg-white text-primary hover:bg-white/90 shadow-xl">
+                  Explore Now
+                </Button>
+              </div>
             </div>
           </div>
         </div>

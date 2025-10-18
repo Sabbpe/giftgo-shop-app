@@ -25,7 +25,7 @@ const BrandDetails = ({ cartItems, setCartItems }: BrandDetailsProps) => {
   if (brandLoading || denominationsLoading) {
     return (
       <div className="min-h-screen bg-background">
-        <Header cartCount={cartItems.length} onCartClick={() => {}} />
+        <Header cartCount={cartItems.length} onCartClick={() => {}} selectedCategory={null} onCategoryClick={() => {}} />
         <div className="container py-12 text-center">
           <p className="text-muted-foreground">Loading...</p>
         </div>
@@ -36,7 +36,7 @@ const BrandDetails = ({ cartItems, setCartItems }: BrandDetailsProps) => {
   if (!brand) {
     return (
       <div className="min-h-screen bg-background">
-        <Header cartCount={cartItems.length} onCartClick={() => {}} />
+        <Header cartCount={cartItems.length} onCartClick={() => {}} selectedCategory={null} onCategoryClick={() => {}} />
         <div className="container py-12 text-center">
           <h1 className="text-2xl font-bold mb-4">Brand not found</h1>
           <Button onClick={() => navigate("/")}>Back to Home</Button>
@@ -69,7 +69,7 @@ const BrandDetails = ({ cartItems, setCartItems }: BrandDetailsProps) => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header cartCount={cartItems.length} onCartClick={() => {}} />
+      <Header cartCount={cartItems.length} onCartClick={() => {}} selectedCategory={null} onCategoryClick={() => {}} />
       
       <div className="container py-8">
         <Button

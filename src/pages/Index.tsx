@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import VoucherCard from "@/components/VoucherCard";
 import Cart from "@/components/Cart";
 import Banner from "@/components/Banner";
-import CategoryIcons from "@/components/CategoryIcons";
+import TopFeaturedBrands from "@/components/TopFeaturedBrands";
 import DealOfTheDay from "@/components/DealOfTheDay";
 import Testimonials from "@/components/Testimonials";
 import FilterSort, { FilterOptions } from "@/components/FilterSort";
@@ -124,7 +124,14 @@ const Index = ({ cartItems, setCartItems }: IndexProps) => {
     <div className="min-h-screen bg-background">
       <Header 
         cartCount={cartItems.length} 
-        onCartClick={() => setIsCartOpen(true)} 
+        onCartClick={() => setIsCartOpen(true)}
+        selectedCategory={selectedCategory}
+        onCategoryClick={(categoryId) => {
+          const category = categories.find(c => c.id === categoryId);
+          if (category) {
+            handleCategoryClick(category.name);
+          }
+        }}
       />
       
       <main className="container py-8">
@@ -135,9 +142,6 @@ const Index = ({ cartItems, setCartItems }: IndexProps) => {
             </TabsTrigger>
             <TabsTrigger value="whats-hot" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary">
               What's Hot
-            </TabsTrigger>
-            <TabsTrigger value="categories" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary">
-              Categories
             </TabsTrigger>
           </TabsList>
 
@@ -162,12 +166,7 @@ const Index = ({ cartItems, setCartItems }: IndexProps) => {
             />
 
             <div className="mb-8">
-              <h2 className="text-2xl font-bold mb-6">Shop by Category</h2>
-              <CategoryIcons 
-                categories={categories}
-                onCategoryClick={handleCategoryClick}
-                selectedCategory={selectedCategory}
-              />
+              <TopFeaturedBrands onBrandClick={handleBrandClick} />
             </div>
 
             <div className="flex gap-6">
@@ -243,36 +242,6 @@ const Index = ({ cartItems, setCartItems }: IndexProps) => {
             </div>
           </TabsContent>
 
-          <TabsContent value="categories" className="mt-0">
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold mb-4">Browse by Category</h2>
-              <CategoryIcons 
-                categories={categories}
-                onCategoryClick={handleCategoryClick}
-                selectedCategory={selectedCategory}
-              />
-            </div>
-
-            {selectedCategory && (
-              <div className="mt-8">
-                <h3 className="text-2xl font-bold mb-6">{selectedCategory}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredAndSortedBrands.map((brand) => {
-                    const category = categories.find(c => c.id === brand.category_id);
-                    return (
-                      <VoucherCard 
-                        key={brand.id} 
-                        brand={brand}
-                        category={category}
-                        onAddToCart={handleAddToCart}
-                        onClick={() => handleBrandClick(brand.slug)}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </TabsContent>
         </Tabs>
 
         <Testimonials />
