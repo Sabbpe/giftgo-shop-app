@@ -3,6 +3,22 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles } from "lucide-react";
 
+const gradients = [
+  "from-purple-500 to-pink-500",
+  "from-blue-500 to-cyan-500",
+  "from-green-500 to-emerald-500",
+  "from-orange-500 to-red-500",
+  "from-indigo-500 to-purple-500",
+  "from-pink-500 to-rose-500",
+  "from-teal-500 to-green-500",
+  "from-yellow-500 to-orange-500",
+];
+
+const getGradientForBrand = (brandName: string) => {
+  const index = brandName.charCodeAt(0) % gradients.length;
+  return gradients[index];
+};
+
 interface TopFeaturedBrandsProps {
   onBrandClick: (slug: string) => void;
 }
@@ -44,20 +60,24 @@ const TopFeaturedBrands = ({ onBrandClick }: TopFeaturedBrandsProps) => {
           >
             <CardContent className="p-4 text-center space-y-2">
               <div className="relative">
-                <div className="h-20 flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg group-hover:scale-105 transition-transform">
+                <div className="h-20 flex items-center justify-center rounded-lg group-hover:scale-105 transition-transform overflow-hidden">
                   {brand.logo_url ? (
-                    <img
-                      src={brand.logo_url}
-                      alt={brand.name}
-                      className="h-16 w-16 object-contain"
-                    />
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted/50 to-muted p-2">
+                      <img
+                        src={brand.logo_url}
+                        alt={brand.name}
+                        className="h-16 w-16 object-contain"
+                      />
+                    </div>
                   ) : (
-                    <span className="text-2xl font-bold text-primary">
-                      {brand.name.charAt(0)}
-                    </span>
+                    <div className={`w-full h-full flex items-center justify-center bg-gradient-to-br ${getGradientForBrand(brand.name)} text-white`}>
+                      <span className="text-3xl font-bold drop-shadow-lg">
+                        {brand.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
                   )}
                 </div>
-                <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-accent to-primary">
+                <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-accent to-primary shadow-lg">
                   {brand.discount_percentage}% OFF
                 </Badge>
               </div>

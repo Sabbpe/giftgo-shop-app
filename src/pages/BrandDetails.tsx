@@ -8,6 +8,22 @@ import { useBrand, useVoucherDenominations, useCategories } from "@/hooks/useBra
 import { CartItem } from "@/types/cart";
 import { useToast } from "@/hooks/use-toast";
 
+const gradients = [
+  "from-purple-500 to-pink-500",
+  "from-blue-500 to-cyan-500",
+  "from-green-500 to-emerald-500",
+  "from-orange-500 to-red-500",
+  "from-indigo-500 to-purple-500",
+  "from-pink-500 to-rose-500",
+  "from-teal-500 to-green-500",
+  "from-yellow-500 to-orange-500",
+];
+
+const getGradientForBrand = (brandName: string) => {
+  const index = brandName.charCodeAt(0) % gradients.length;
+  return gradients[index];
+};
+
 interface BrandDetailsProps {
   cartItems: CartItem[];
   setCartItems: (items: CartItem[]) => void;
@@ -83,15 +99,21 @@ const BrandDetails = ({ cartItems, setCartItems }: BrandDetailsProps) => {
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <div>
-            <div className="aspect-square bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+            <div className="aspect-square rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
               {brand.logo_url ? (
-                <img 
-                  src={brand.logo_url} 
-                  alt={brand.name}
-                  className="w-full h-full object-contain p-12"
-                />
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted/50 to-muted p-12">
+                  <img 
+                    src={brand.logo_url} 
+                    alt={brand.name}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
               ) : (
-                <div className="text-9xl font-bold text-primary/30">{brand.name.charAt(0)}</div>
+                <div className={`w-full h-full flex items-center justify-center bg-gradient-to-br ${getGradientForBrand(brand.name)} text-white`}>
+                  <span className="text-9xl font-bold drop-shadow-2xl">
+                    {brand.name.charAt(0).toUpperCase()}
+                  </span>
+                </div>
               )}
             </div>
           </div>
