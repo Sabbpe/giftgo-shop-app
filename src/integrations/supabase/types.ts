@@ -14,7 +14,249 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      brands: {
+        Row: {
+          category_id: string | null
+          created_at: string | null
+          description: string | null
+          discount_percentage: number | null
+          gst_status: string | null
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          logo_url: string | null
+          name: string
+          slug: string
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          discount_percentage?: number | null
+          gst_status?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          logo_url?: string | null
+          name: string
+          slug: string
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          discount_percentage?: number | null
+          gst_status?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          logo_url?: string | null
+          name?: string
+          slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "brands_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      categories: {
+        Row: {
+          created_at: string | null
+          display_order: number | null
+          icon_name: string | null
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string | null
+          display_order?: number | null
+          icon_name?: string | null
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string | null
+          display_order?: number | null
+          icon_name?: string | null
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      order_items: {
+        Row: {
+          brand_id: string | null
+          brand_name: string
+          created_at: string | null
+          discount_percentage: number | null
+          id: string
+          order_id: string | null
+          quantity: number | null
+          total_price: number
+          unit_price: number
+          voucher_value: number
+        }
+        Insert: {
+          brand_id?: string | null
+          brand_name: string
+          created_at?: string | null
+          discount_percentage?: number | null
+          id?: string
+          order_id?: string | null
+          quantity?: number | null
+          total_price: number
+          unit_price: number
+          voucher_value: number
+        }
+        Update: {
+          brand_id?: string | null
+          brand_name?: string
+          created_at?: string | null
+          discount_percentage?: number | null
+          id?: string
+          order_id?: string | null
+          quantity?: number | null
+          total_price?: number
+          unit_price?: number
+          voucher_value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brands"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          created_at: string | null
+          customer_email: string | null
+          customer_name: string | null
+          customer_phone: string | null
+          discount_amount: number | null
+          final_amount: number
+          id: string
+          order_number: string
+          status: string | null
+          total_amount: number
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          discount_amount?: number | null
+          final_amount: number
+          id?: string
+          order_number: string
+          status?: string | null
+          total_amount: number
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          discount_amount?: number | null
+          final_amount?: number
+          id?: string
+          order_number?: string
+          status?: string | null
+          total_amount?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      voucher_denominations: {
+        Row: {
+          brand_id: string | null
+          created_at: string | null
+          display_order: number | null
+          id: string
+          is_available: boolean | null
+          value: number
+        }
+        Insert: {
+          brand_id?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          is_available?: boolean | null
+          value: number
+        }
+        Update: {
+          brand_id?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          is_available?: boolean | null
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "voucher_denominations_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brands"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
