@@ -135,7 +135,7 @@ const Index = ({ cartItems, setCartItems }: IndexProps) => {
       />
       
       <main className="container py-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-8">
           <TabsList className="mb-8 w-full justify-start border-b rounded-none h-auto p-0 bg-transparent">
             <TabsTrigger value="store" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary">
               Store
@@ -168,64 +168,62 @@ const Index = ({ cartItems, setCartItems }: IndexProps) => {
             <div className="mb-8">
               <TopFeaturedBrands onBrandClick={handleBrandClick} />
             </div>
-
-            <div className="flex gap-6">
-              <aside className="w-64 shrink-0">
-                <FilterSort 
-                  onFilterChange={setFilters}
-                  onSortChange={setSortBy}
-                  categories={availableCategories}
-                />
-              </aside>
-
-              <div className="flex-1">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold">
-                    {selectedCategory || "All Brands"}
-                  </h2>
-                  <p className="text-muted-foreground">
-                    {filteredAndSortedBrands.length} brands
-                  </p>
-                </div>
-
-                {brandsLoading ? (
-                  <div className="text-center py-12">
-                    <p className="text-muted-foreground">Loading brands...</p>
-                  </div>
-                ) : filteredAndSortedBrands.length === 0 ? (
-                  <div className="text-center py-12">
-                    <p className="text-muted-foreground">No brands found</p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredAndSortedBrands.map((brand) => {
-                      const category = categories.find(c => c.id === brand.category_id);
-                      return (
-                        <VoucherCard 
-                          key={brand.id} 
-                          brand={brand}
-                          category={category}
-                          onAddToCart={handleAddToCart}
-                          onClick={() => handleBrandClick(brand.slug)}
-                        />
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            </div>
           </TabsContent>
 
           <TabsContent value="whats-hot" className="mt-0">
             <Banner />
             <div className="mb-8">
               <h2 className="text-3xl font-bold mb-4">What's Hot 🔥</h2>
-              <p className="text-muted-foreground mb-8">Top trending gift cards with the best discounts</p>
-              
+              <p className="text-muted-foreground mb-6">Top trending gift cards with the best discounts</p>
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        {/* Persistent Filter Sidebar and Content Grid */}
+        <div className="flex gap-6">
+          <aside className="w-64 shrink-0 sticky top-24 self-start">
+            <FilterSort 
+              onFilterChange={setFilters}
+              onSortChange={setSortBy}
+              categories={availableCategories}
+            />
+          </aside>
+
+          <div className="flex-1">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold">
+                {activeTab === "whats-hot" ? "Trending Brands" : selectedCategory || "All Brands"}
+              </h2>
+              <p className="text-muted-foreground">
+                {activeTab === "whats-hot" 
+                  ? `${brands.filter(b => b.discount_percentage >= 10).length} brands`
+                  : `${filteredAndSortedBrands.length} brands`
+                }
+              </p>
+            </div>
+
+            {brandsLoading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading brands...</p>
+              </div>
+            ) : activeTab === "whats-hot" ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {brands
-                  .filter(b => b.discount_percentage >= 10)
-                  .slice(0, 9)
+                  .filter(b => b.discount_percentage >= filters.minDiscount)
+                  .filter(b => filters.categories.length === 0 || filters.categories.includes(categories.find(c => c.id === b.category_id)?.name || ''))
+                  .sort((a, b) => {
+                    switch (sortBy) {
+                      case "discount-high":
+                        return (b.discount_percentage || 0) - (a.discount_percentage || 0);
+                      case "name-asc":
+                        return a.name.localeCompare(b.name);
+                      case "name-desc":
+                        return b.name.localeCompare(a.name);
+                      default:
+                        return (b.discount_percentage || 0) - (a.discount_percentage || 0);
+                    }
+                  })
+                  .slice(0, 12)
                   .map((brand) => {
                     const category = categories.find(c => c.id === brand.category_id);
                     return (
@@ -239,12 +237,32 @@ const Index = ({ cartItems, setCartItems }: IndexProps) => {
                     );
                   })}
               </div>
-            </div>
-          </TabsContent>
+            ) : filteredAndSortedBrands.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No brands found</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredAndSortedBrands.map((brand) => {
+                  const category = categories.find(c => c.id === brand.category_id);
+                  return (
+                    <VoucherCard 
+                      key={brand.id} 
+                      brand={brand}
+                      category={category}
+                      onAddToCart={handleAddToCart}
+                      onClick={() => handleBrandClick(brand.slug)}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
 
-        </Tabs>
-
-        <Testimonials />
+        <div className="mt-12">
+          <Testimonials />
+        </div>
       </main>
 
       <Cart 
